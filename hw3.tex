@@ -1,0 +1,197 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[margin=3cm]{geometry}
+\usepackage{paralist}
+\usepackage{amsthm, amsmath, amsfonts, amssymb}
+\usepackage{mathtools} % \mathclap
+\usepackage{bm}
+\usepackage{dsfont}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{comment}
+\usepackage{xcolor, colortbl}
+\usepackage{xifthen, xspace}
+\usepackage{caption, subcaption}
+\usepackage{lscape}
+\usepackage{braket}
+\usepackage{epigraph}
+\usepackage{sectsty}
+\usepackage{listings}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+
+\title{Теоретические модели вычислений \\
+ДЗ №3: Машины Тьюринга и квантовые вычисления}
+
+\date{1 мая 2022 года}
+
+\begin{document}
+
+\maketitle
+
+\section{Введение}
+
+Для того, чтобы работа была принята, требуется соблюдать ряд условий:
+
+\begin{enumerate}
+    \item Текст решения домашней работы должен быть подготовлен в одном из следующих форматов: \href{https://www.latex-project.org/}{\LaTeX}, \href{https://en.wikipedia.org/wiki/Markdown}{Markdown}, \href{https://asciidoc-py.github.io/index.html}{AsciiDOC}
+    \item Дополнительно должен быть приложен PDF файл
+    \item Для набора рекомендуется использовать сервисы типа \href{https://www.overleaf.com}{Overleaf}
+    \item Работу можно выполнить на английском языке
+    \item Иллюстрации, должны быть описаны на декларативном языке \href{https://graphviz.org/}{Graphviz} или \href{https://mermaid-js.github.io/mermaid/#/}{Mermaid}. В сам документ можно вставить отрендеренную картинку.
+    \item За каждое задание можно получить определённое количество количество баллов, указанное рядом с заданием
+    \item Мягкий дедлайн -- 20 дней (12:00 20 мая 2022 года), после него $-30\%$ к оценке
+    \item Для зачёта надо набрать $60\%$ от максимальной оценки
+    \item Максимальное количество баллов: 10.
+    \item Работа должна быть выложена на \href{https://github.com/}{GitHub}, в репозитории, созданном к ней
+\end{enumerate}
+
+\section{Машины Тьюринга}
+
+Работу требуется выполнять в системе \url{turingmachine.io}. \\\\
+Для сдачи заданий 1-2 требуется прикрепить файлы YAML с исходным кодом проекта. Каждый файлы должен иметь наименование задание\_пункт.yml, к примеру 1\_1.yml для первой задачи первого задания. \\\\
+
+\subsection{Операции с числами}
+
+Реализуйте машины Тьюринга, которые позволяют выполнять следующие операции:
+\begin{enumerate}
+    \item Сложение двух унарных чисел (1 балла)
+    \item Умножение унарных чисел (1 балл)
+\end{enumerate}
+
+
+\subsection{Операции с языками и символами}
+
+Реализуйте машины Тьюринга, которые позволяют выполнять следующие операции:
+\begin{enumerate}
+    \item Принадлежность к языку $L = \{ 0^n1^n2^n \}, n \ge 0$ (0.5 балла)
+    \item Проверка соблюдения правильности скобок в строке (минимум 3 вида скобок) (0.5 балла)
+    \item Поиск минимального по длине слова в строке (слова состоят из символов 1 и 0 и разделены пробелом) (1 балл)
+\end{enumerate}
+
+
+\section{Квантовые вычисления}
+
+Для выполнения заданий по квантовым вычислениям требуется QDK. Его можно скачать здесь: \url{https://docs.microsoft.com/en-us/azure/quantum/install-overview-qdk}. 
+\\\\
+Но можно использовать любой пакет, типа \url{https://qiskit.org/}. 
+\\\\
+В качестве решения задачи надо предоставить схему алгоритма для частного случая при фиксированном количестве кубитов и фиксированных состояниях. 
+
+
+\subsection{Генерация суперпозиций 1 (1 балл)}
+
+Дано $N$ кубитов ($1 \le N \le 8$) в нулевом состоянии $\Ket{0\dots0}$. Также дана некоторая последовательность битов, которое задаёт ненулевое базисное состояние размера $N$. Задача получить суперпозицию нулевого состояния и заданного.
+
+$$\Ket{S} = \frac{1}{\sqrt2}(\Ket{0\dots0} +\Ket{\psi})$$
+
+То есть требуется реализовать операцию, которая принимает на вход:
+
+\begin{enumerate}
+    \item Массив кубитов $q_s$
+    \item Массив битов $bits$ описывающих некоторое состояние $\Ket{\psi}$. Это массив имеет тот же самый размер, что и $qs$. Первый элемент этого массива равен $1$.
+\end{enumerate}
+
+
+Заготовка для кода:
+\begin{lstlisting}
+namespace Solution {
+        open Microsoft.Quantum.Primitive;
+        open Microsoft.Quantum.Canon;
+        operation Solve (qs : Qubit[], bits : Bool[]) : ()
+        {
+            body
+            {
+
+            }
+        }
+}
+\end{lstlisting}
+
+
+\subsection{Различение состояний 1 (1 балл)}
+
+Дано $N$ кубитов ($1 \le N \le 8$), которые могут быть в одном из двух состояний:
+
+$$\Ket{GHZ} = \frac{1}{\sqrt2}(\Ket{0\dots0} +\Ket{1\dots1})$$
+$$\Ket{W} = \frac{1}{\sqrt N}(\Ket{10\dots00}+\Ket{01\dots00} + \dots +\Ket{00\dots01})$$
+
+Требуется выполнить необходимые преобразования, чтобы точно различить эти два состояния. Возвращать $0$, если первое состояние и 1, если второе. 
+\\\\
+Заготовка для кода:
+\begin{lstlisting}
+namespace Solution {
+        open Microsoft.Quantum.Primitive;
+        open Microsoft.Quantum.Canon;
+        operation Solve (qs : Qubit[]) : Int
+        {
+            body
+            {
+
+                return 
+            }
+        }
+}
+\end{lstlisting}
+
+
+\subsection{Различение состояний 2 (2 балла)}
+
+Дано $2$ кубита, которые могут быть в одном из двух состояний:
+
+$$\Ket{S_0} = \frac{1}{2}(\Ket{00} + \Ket{01} + \Ket{10} + \Ket{11})$$
+$$\Ket{S_1} = \frac{1}{2}(\Ket{00} - \Ket{01} + \Ket{10} - \Ket{11})$$
+$$\Ket{S_2} = \frac{1}{2}(\Ket{00} + \Ket{01} - \Ket{10} - \Ket{11})$$
+$$\Ket{S_3} = \frac{1}{2}(\Ket{00} - \Ket{01} - \Ket{10} + \Ket{11})$$
+
+
+Требуется выполнить необходимые преобразования, чтобы точно различить эти четыре состояния. Возвращать требуется индекс состояния (от $0$ до $3$). 
+\\\\
+Заготовка для кода:
+\begin{lstlisting}
+namespace Solution {
+        open Microsoft.Quantum.Primitive;
+        open Microsoft.Quantum.Canon;
+        operation Solve (qs : Qubit[]) : Int
+        {
+            body
+            {
+
+                return 
+            }
+        }
+}
+\end{lstlisting}
+
+
+\subsection{Написание оракула 1 (2 балла)}
+
+Требуется реализовать квантовый оракул на $N$ кубитах ($1 \le N \le 8$), который реализует следующую функцию: $f(\pmb{x}) = (\pmb{b}\pmb{x}) \mod 2$, где  $\pmb{b} \in \{0,1\}^N$ вектор битов и  $\pmb{x}$ вектор кубитов. Выход функции записать в кубит $\pmb{y}$. Количество кубитов $N$ ($1 \le N \le 8$). 
+\\\\
+Заготовка для кода:
+\begin{lstlisting}
+namespace Solution {
+        open Microsoft.Quantum.Primitive;
+        open Microsoft.Quantum.Canon;
+        operation Solve (x : Qubit[], y : Qubit, b : Int[]) : ()
+        {
+            body
+            {
+
+            }
+        }
+}
+\end{lstlisting}
+
+\end{document}
