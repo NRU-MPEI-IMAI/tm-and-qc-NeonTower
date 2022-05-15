@@ -1,0 +1,39 @@
+# 2.1) Принадлежность к языку L = {0^n1^n2^n}, n>=0
+input: '001122'
+blank: ' '
+start state: zero
+table:
+  # взятие нуля
+  zero:
+    ' ': {L: done}
+    0: {write: a, R: one}
+    [1, 2]: {R: fail}
+    a: R
+  # поиск и взятие единицы
+  one:
+    [0, a]: R
+    1: {write: a, R: two}
+    [2, ' ']: {L: fail}
+  # поиск и взятие двойки
+  two:
+    [1, a]: R
+    2: {write: a, L: back_zero}
+    ' ': {L: fail}
+  # возврат ко взятию нуля
+  back_zero:
+    [a, 2, 1, 0]: L
+    ' ': {R: zero}
+  # успех
+  done:
+    a: {write: ' ', L}
+    ' ': {write: d, R: exit}
+  # неудача
+  fail:
+    [a, 0, 1, 2]: R
+    ' ': {L: del}
+  # стереть
+  del:
+    [a, 0, 1, 2]: {write: ' ', L}
+    ' ': {write: f, R: exit}
+  exit:
+    ' ': L

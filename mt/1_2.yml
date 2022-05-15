@@ -1,0 +1,52 @@
+# 1.2) Умножение двух унарных чисел
+input: '11*11'
+blank: ' '
+start state: put_eq
+table:
+  # поставить в конец знак равенства
+  put_eq: 
+    [1, '*']: R
+    ' ': {write: =, L: left}
+  # движение влево
+  left:
+    [1, '*']: L
+    ' ': {R: start_mul}
+  # начать умножение
+  start_mul:
+    1: {write: a, R: to_second}
+    a: R
+    '*': {L: to_left_end}
+  # движение ко второму множителю
+  to_second:
+    1: R
+    '*': {R: second}
+  # обработка второго множителя
+  second:
+    a: R
+    1: {write: a, R: carry_to_answer}
+    =: {L: restore_second}
+  # перенос единицы в ответ
+  carry_to_answer:
+    [1, =]: R
+    ' ': {write: 1, L: back_to_second}
+  #возврат ко второму множителю
+  back_to_second:
+    [1, =]: L
+    a: {R: second}
+  # восстановить второй множитель (обработка закончена)
+  restore_second:
+    a: {write: 1, L}
+    '*': {L: to_first}
+  # перейти к необработанному разряду
+  to_first:
+    1: L
+    a: {R: start_mul}
+  # к левому краю
+  to_left_end:
+    a: L
+    ' ': {R: del_all}
+  # очистить входные данные
+  del_all:
+    [1, '*', a]: {write: ' ', R: del_all}
+    =: {write: ' ', R: done}
+  done:

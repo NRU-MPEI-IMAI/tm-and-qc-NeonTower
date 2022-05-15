@@ -1,0 +1,100 @@
+# 2.2) Проверка соблюдения правильности скобок в строке (минимум 3 вида скобок) 
+# <тривиальная правильная последовательность> ::= () | [] | {} | 
+input: '([{}])({[]}){}'
+#input: '([{}]'
+#input: ')'
+#input: '('
+#input: '()[]{}'
+#input: ''
+blank: ' '
+start state: left
+table:
+  # смотрим слева
+  left:
+    ' ': {L: to_begin}
+    a: R
+    '(': {R: left_r}
+    '[': {R: left_sq}
+    '{': {R: left_fig}
+    ')': {write: a, L: right_r}
+    ']': {write: a, L: right_sq}
+    '}': {write: a, L: right_fig}
+  # встречена левая круглая скобка
+  left_r:
+    ' ': {L: fail}
+    a: R
+    '(': {R: left_r}
+    '[': {R: left_sq}
+    '{': {R: left_fig}
+    ')': {write: a, L: right_r}
+    ']': {write: a, L: right_sq}
+    '}': {write: a, L: right_fig}
+  # встречена левая квадратная скобка
+  left_sq:
+    ' ': {L: fail}
+    a: R
+    '(': {R: left_r}
+    '[': {R: left_sq}
+    '{': {R: left_fig}
+    ')': {write: a, L: right_r}
+    ']': {write: a, L: right_sq}
+    '}': {write: a, L: right_fig}
+  # встречена левая фигурная скобка
+  left_fig:
+    ' ': {L: fail}
+    a: R
+    '(': {R: left_r}
+    '[': {R: left_sq}
+    '{': {R: left_fig}
+    ')': {write: a, L: right_r}
+    ']': {write: a, L: right_sq}
+    '}': {write: a, L: right_fig}
+  # встречена правая круглая скобка
+  right_r:
+    a: L
+    '(': {write: a, L: try_left}
+    ['{', '[']: {write: a, L: fail}
+    ' ': {R: fail}
+  # встречена правая квадратная скобка
+  right_sq:
+    a: L
+    '[': {write: a, L: try_left}
+    ['{', '(']: {write: a, L: fail}
+    ' ': {R: fail}
+  # встречена правая фигурная скобка
+  right_fig:
+    a: L
+    '{': {write: a, L: try_left}
+    ['(', '[']: {write: a, L: fail}
+    ' ': {R: fail}
+  # посмотреть слева
+  try_left:
+    ' ': {R: left}
+    [a, '{', '[', '(']: {R: back_to_left}
+  # перейти влево
+  back_to_left:
+    a: {L: left}
+    ' ': L
+  # перейти в начало слова (при успехе)
+  to_begin:
+    ' ': {R: done}
+    a: L
+    ['{', '[', '(']: {L: try_left}
+  # успех
+  done:
+    [a, ' ']: {write: d, R: to_end}
+  # перейти в конец слова
+  to_end:
+    [a, '{', '[', '(', '}', ']', ')']: R
+    ' ': {L: clear}
+  # стереть все символы из исходного алфавита
+  clear: 
+    [a, '{', '[', '(', '}', ']', ')']: {write: ' ', L}
+    d: L
+    ' ': {R: exit}
+  # неудача
+  fail:
+    [a, '{', '[', '(', '}', ']', ')', ' ']: {R: to_end}
+  # выход
+  exit:
+    ' ': {write: f, R: back_to_left}
